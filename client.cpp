@@ -53,10 +53,16 @@ int main(int argc, char const *argv[]) {
   serv_addr.sin_addr.s_addr = INADDR_ANY;
 	serv_addr.sin_port = htons(8080);
 	
+	string ip_str;
+	cout << "Type your ip address(127.0.0.1): " << endl;
+	getline(cin, ip_str);
+	if (ip_str == "") { ip_str = "127.0.0.1"; }
+	cout << ip_str << endl;
+	while (true) {}
 
 
 	// Convert IPv4 and IPv6 addresses from text to binary form
-	if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) {
+	if(inet_pton(AF_INET, ip_str.c_str(), &serv_addr.sin_addr)<=0) {
 		printf("\nInvalid address/ Address not supported \n");
 		return -1;
 	}
@@ -77,8 +83,6 @@ int main(int argc, char const *argv[]) {
 	thread sending_thread;
 	listening_thread = thread(listening, sock, serv_addr);
 	sending_thread = thread(sending, sock, serv_addr);
-
-
 
 	listening_thread.join();
 	sending_thread.join();
